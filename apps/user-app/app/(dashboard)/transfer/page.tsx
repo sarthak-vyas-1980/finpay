@@ -12,7 +12,7 @@ async function getBalance() {
             userId: Number(session?.user?.id)
         }
     });
-    return {
+    return { // We don't want every detail to be shared that's why not returning the whole balance
         amount: balance?.amount || 0,
         locked: balance?.locked || 0
     }
@@ -38,7 +38,7 @@ export default async function() {
     const transactions = await getOnRampTransactions();
 
     return <div className="w-screen">
-        <div className="text-4xl text-[#6a51a6] pt-8 mb-8 font-bold">
+        <div className="text-4xl text-[#20438e] pt-8 mb-8 font-bold">
             Transfer
         </div>
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2 p-4">

@@ -6,10 +6,10 @@ export const OnRampTransactions = ({
     transactions: {
         time: Date,
         amount: number,
-        // TODO: Can the type of `status` be more specific?
+        // TODO: Can the type of `status` be more specific?    (ans: enum maybe)
         status: string,
         provider: string
-    }[]
+    }[] // Array of Objects
 }) => {
     if (!transactions.length) {
         return <Card title="Recent Transactions">
