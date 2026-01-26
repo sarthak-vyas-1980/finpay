@@ -9,11 +9,11 @@ export default async function () {
             {transactions.map(txn => (
                 <div key={txn.time.toISOString()}>
                     {txn.type === "ON_RAMP" ? (
-                        <TransactionCard upOrDown={"+"} amount={txn.amount} label={"Received"} date={txn.time}/>
+                        <TransactionCard status={txn.status} provider={txn.provider} upOrDown={"+"} amount={txn.amount} label={"Received from"} date={txn.time}/>
                     ) : (
                     txn.direction === "SENT" ? 
-                    <TransactionCard toFrom={txn.to} upOrDown={"+"} amount={txn.amount} label={"Received from"} date={txn.time}/> : 
-                    <TransactionCard toFrom={txn.from} upOrDown={"-"} amount={txn.amount} label={"Paid to"} date={txn.time}/>
+                    <TransactionCard toFrom={txn.to.name || txn.to.number.toString()} upOrDown={"+"} amount={txn.amount} label={"Received from"} date={txn.time}/> : 
+                    <TransactionCard toFrom={txn.from.name || txn.from.number.toString()} upOrDown={"-"} amount={txn.amount} label={"Paid to"} date={txn.time}/>
                 )}
             </div>
             ))}

@@ -1,11 +1,13 @@
 import { UPArrow, DOWNArrow } from "@repo/ui/icons";
 
-export const TransactionCard = ({upOrDown, amount, label, date, toFrom}:{
+export const TransactionCard = ({status, provider, upOrDown, amount, label, date, toFrom}:{
     upOrDown: string,
     amount: number,
     label: string,
     date: Date,
-    toFrom?: number
+    toFrom?: string,
+    provider?: string,
+    status?: string
 }) => {
     return <div>
         <div className="flex justify py-2 gap-40 between">
@@ -14,11 +16,15 @@ export const TransactionCard = ({upOrDown, amount, label, date, toFrom}:{
                 <div>
                     <div>{label}</div>
                     <div>{toFrom}</div>
+                    <div>{provider}</div>
                     <div className="text-slate-600">{date.toLocaleString()}</div>
                 </div>
             </div>
             <div className="flex justify-center items-center">
-                {upOrDown} ₹{amount/100}
+                <div>
+                    <div>{upOrDown} ₹{amount/100}</div>
+                    <div>{status}</div>
+                </div>
             </div>
         </div><hr></hr>
     </div>

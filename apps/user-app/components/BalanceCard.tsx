@@ -8,7 +8,7 @@ export const BalanceCard = ({amount, locked}: {
     return<div className="h-[90vh]">
         <Center>
         <Card title={"Balance"}>
-        <div className="flex justify-between border-b border-slate-300 pb-2">
+        <div className="flex justify-between py-2 gap-40 border-b border-slate-300 pb-2">
             <div>
                 Unlocked balance
             </div>

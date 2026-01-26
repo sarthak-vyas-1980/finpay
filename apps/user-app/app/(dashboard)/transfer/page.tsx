@@ -34,7 +34,7 @@ export default async function() {
                 <AddMoney />
             </div>
             <div>
-                <div className="pt-4">
+                <div className="pt-4 px-6">
                     <OnRampTransactions transactions={transactions} />
                 </div>
             </div>

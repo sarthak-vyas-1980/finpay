@@ -2,22 +2,30 @@ import prisma from "@repo/db/client";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../auth";
 
-export type Transaction = //Type for the main export type
-    | {
-        type: "ON_RAMP";
-        time: Date;
-        amount: number;
-        status: string;
-        provider: string;
-      }
-    | {
-        type: "P2P";
-        time: Date;
-        amount: number;
-        from: number;
-        to: number;
-        direction: "SENT" | "RECEIVED";
+export type Transaction =
+  | {
+      type: "ON_RAMP";
+      time: Date;
+      amount: number;
+      status: string;
+      provider: string;
+    }
+  | {
+      type: "P2P";
+      time: Date;
+      amount: number;
+      direction: "SENT" | "RECEIVED";
+      from: {
+        id: number;
+        name: string | null;
+        number: string;
       };
+      to: {
+        id: number;
+        name: string | null;
+        number: string;
+      };
+    };
 
 async function getOnRampTransactions(userId: number): Promise<Transaction[]> {
   const txns = await prisma.onRampTransaction.findMany({
@@ -38,17 +46,42 @@ async function getp2PTransactions(userId: number): Promise<Transaction[]> {
     where: {
       OR: [{ fromUserId: userId }, { toUserId: userId }],
     },
+    include: {
+      fromUser: {
+        select: {
+          id: true,
+          name: true,
+          number: true,
+        },
+      },
+      toUser: {
+        select: {
+          id: true,
+          name: true,
+          number: true,
+        },
+      },
+    },
   });
 
   return txns.map((t) => ({
     type: "P2P",
     time: t.timestamp,
     amount: t.amount,
-    from: t.fromUserId,
-    to: t.toUserId,
     direction: t.fromUserId === userId ? "SENT" : "RECEIVED",
+    from: {
+      id: t.fromUser.id,
+      name: t.fromUser.name,
+      number: t.fromUser.number,
+    },
+    to: {
+      id: t.toUser.id,
+      name: t.toUser.name,
+      number: t.toUser.number,
+    },
   }));
 }
+
 
 /* -------------------- MAIN EXPORT -------------------- */
 
