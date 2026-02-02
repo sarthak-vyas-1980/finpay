@@ -2,10 +2,13 @@ import prisma from "@repo/db/client";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../../lib/auth";
 import { BalanceCard } from "../../../components/BalanceCard";
-import { Center } from "@repo/ui/center";
 
 async function getBalance() {
     const session = await getServerSession(authOptions);
+    if (!session?.user?.id) {
+        // throw new Error("Unauthenticated");
+        return null
+    }
     const balance = await prisma.balance.findFirst({
         where: {
             userId: Number(session?.user?.id)
@@ -19,6 +22,7 @@ async function getBalance() {
 
 export default async function() {
     const balance = await getBalance();
+    if(!balance) return null;
     return <div className="w-screen">
         {/* <div className="text-4xl text-[#20438E] pt-8 mb-8 font-bold">
             Dashboard
