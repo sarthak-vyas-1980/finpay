@@ -1,14 +1,21 @@
 {
     "name": "@repo/db",
     "version": "0.0.0",
+    "type": "commonjs",
     "dependencies": {
         "@prisma/client": "^5.11.0"
     },
     "devDependencies": {
         "prisma": "5.11.0"
     },
+    "main": "dist/index.js",
+    "types": "dist/index.d.ts",
     "exports": {
-        "./client": "./index.ts"
+        "./client": {
+        "require": "./dist/index.js",
+        "import": "./dist/index.js",
+        "types": "./dist/index.d.ts"
+        }
     },
     "prisma": {
         "seed": "ts-node prisma/seed.ts"

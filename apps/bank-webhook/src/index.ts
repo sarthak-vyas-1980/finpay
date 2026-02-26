@@ -45,3 +45,6 @@ app.post("/confirm-payment", async (req, res) => {
     res.status(500).send("Payment Failed");
   }
 });
+app.listen(3005, () => {
+  console.log("Bank webhook running on port 3005");
+});

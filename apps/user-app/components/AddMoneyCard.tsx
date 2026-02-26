@@ -41,7 +41,7 @@ export const AddMoney = () => {
                 alert("Error creating transaction");
                 return;
                 }
-                window.location.href = `http://localhost:3003/pay.html?token=${response.token}&userId=${response.userId}&amount=${response.amount}`;
+                window.location.href = `http://localhost:3005/pay.html?token=${response.token}&userId=${response.userId}&amount=${response.amount}`;
             }}> Add Money
             </Button>
         </div>
