@@ -1,6 +1,7 @@
 import prisma from "@repo/db/client";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../auth";
+import { getCurrentUser } from "../authUser";
 
 export type Transaction =
   | {
@@ -18,12 +19,12 @@ export type Transaction =
       from: {
         id: number;
         name: string | null;
-        number: string;
+        number: string | null;
       };
       to: {
         id: number;
         name: string | null;
-        number: string;
+        number: string| null;
       };
     };
 
@@ -86,13 +87,12 @@ async function getp2PTransactions(userId: number): Promise<Transaction[]> {
 /* -------------------- MAIN EXPORT -------------------- */
 
 export async function getAllTransactions(): Promise<Transaction[]> {
-  const session = await getServerSession(authOptions);
-
-  if (!session?.user?.id) {
-    throw new Error("Unauthorized");
+  const user = await getCurrentUser();
+  if (!user) {
+      return [];
   }
 
-  const userId = Number(session.user.id);
+  const userId = Number(user.id);
 
   //   const [onRamp, p2p] = await Promise.all([
   //     getOnRampTransactions(userId),

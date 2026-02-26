@@ -78,21 +78,63 @@ export const authOptions = {
       },
     }),
   ],
-
+  // callbacks: {
+  //   async session({ session, token }: any) {
+  //     if (token?.sub && session.user) {
+  //       session.user.id = token.sub;
+  //     }
+  //     return session;
+  //   },
+  // },
   callbacks: {
-    async session({ session, token }:any) {
-      if (session.user?.email) {
-        const dbUser = await prisma.user.findUnique({
-          where: { email: session.user.email },
+    async signIn({ user, account }: any) {
+      // Only for Google OAuth
+      if (account?.provider === "google") {
+        const existingUser = await prisma.user.findFirst({
+          where: { email: user.email! },
         });
 
-        if (dbUser) {
-          session.user.id = dbUser.id.toString(); // ✅ DB ID
+        if (!existingUser) {
+          await prisma.user.create({
+            data: {
+              name: user.name ?? "Google User",
+              email: user.email,
+            },
+          });
         }
+      }
+      return true;
+    },
+
+    async jwt({ token, user, account }: any) {
+      // On first login (credentials OR google)
+      if (user) {
+        // If credentials login, user.id already = DB id
+        if (account?.provider === "credentials") {
+          token.dbId = user.id;
+        }
+
+        // If Google login, find DB user by email
+        if (account?.provider === "google") {
+          const dbUser = await prisma.user.findFirst({
+            where: { email: user.email! },
+          });
+
+          if (dbUser) {
+            token.dbId = dbUser.id.toString();
+          }
+        }
+      }
+
+      return token;
+    },
+
+    async session({ session, token }: any) {
+      if (session.user && token.dbId) {
+        session.user.id = token.dbId;
       }
       return session;
     },
   },
-
   secret: process.env.NEXTAUTH_SECRET,
 };

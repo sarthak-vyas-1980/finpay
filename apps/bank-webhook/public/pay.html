@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>HDFC NetBanking</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+
+  <div class="card">
+    <div class="header">
+      <h2>HDFC NetBanking</h2>
+      <p>Secure Payment Gateway</p>
+    </div>
+
+    <div class="amount" id="amountDisplay"></div>
+
+    <div class="details">
+      <p><strong>Transaction ID:</strong> <span id="token"></span></p>
+      <p><strong>User ID:</strong> <span id="userId"></span></p>
+    </div>
+
+    <form method="POST" action="/confirm-payment">
+      <input type="hidden" name="token" id="tokenInput">
+      <input type="hidden" name="user_identifier" id="userInput">
+      <input type="hidden" name="amount" id="amountInput">
+
+      <button type="submit">Confirm Payment</button>
+    </form>
+
+    <div class="footer">
+      Powered by HDFC Secure Payments
+    </div>
+  </div>
+
+<script>
+  const params = new URLSearchParams(window.location.search);
+
+  const token = params.get("token");
+  const userId = params.get("userId");
+  const amount = params.get("amount");
+
+  document.getElementById("token").innerText = token;
+  document.getElementById("userId").innerText = userId;
+  document.getElementById("amountDisplay").innerText = "₹ " + (amount / 100);
+
+  document.getElementById("tokenInput").value = token;
+  document.getElementById("userInput").value = userId;
+  document.getElementById("amountInput").value = amount;
+</script>
+
+</body>
+</html>

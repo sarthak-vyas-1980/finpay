@@ -1,7 +1,6 @@
 import { Card } from "@repo/ui/card";
 import { getAllTransactions } from "../../lib/actions/getAllTransactions";
 import { TransactionCard } from "../../../components/TransactionCard";
-import { Center } from "@repo/ui/center";
 
 export default async function () {
     const transactions = await getAllTransactions();
@@ -21,8 +20,8 @@ export default async function () {
                         <TransactionCard status={txn.status} provider={txn.provider} upOrDown={"+"} amount={txn.amount} label={"Received from"} date={txn.time}/>
                     ) : (
                     txn.direction === "SENT" ? 
-                    <TransactionCard toFrom={txn.to.name || txn.to.number.toString()} upOrDown={"+"} amount={txn.amount} label={"Received from"} date={txn.time}/> : 
-                    <TransactionCard toFrom={txn.from.name || txn.from.number.toString()} upOrDown={"-"} amount={txn.amount} label={"Paid to"} date={txn.time}/>
+                    <TransactionCard toFrom={txn.to.name ?? txn.to.number?.toString() ?? "Unknown User"} upOrDown={"-"} amount={txn.amount} label={"Paid to"} date={txn.time}/> : 
+                    <TransactionCard toFrom={txn.from.name || txn.from.number?.toString() || "Unknown User"} upOrDown={"+"} amount={txn.amount} label={"Received from"} date={txn.time}/>
                 )}
             </div>
             ))}

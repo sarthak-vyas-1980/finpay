@@ -1,14 +1,16 @@
 import prisma from "@repo/db/client";
 import { AddMoney } from "../../../components/AddMoneyCard";
 import { OnRampTransactions } from "../../../components/OnRampTransactions";
-import { getServerSession } from "next-auth";
-import { authOptions } from "../../lib/auth";
+import { getCurrentUser } from "../../lib/authUser";
 
 async function getOnRampTransactions() {
-    const session = await getServerSession(authOptions);
+    const user = await getCurrentUser();
+    if (!user) {
+        return [];
+    }
     const txns = await prisma.onRampTransaction.findMany({
         where: {
-            userId: Number(session?.user?.id)
+            userId: Number(user?.id)
         },
         orderBy: {
             startTime: "desc",

@@ -28,6 +28,8 @@ export async function createOnRampTransaction(provider: string, amount: number) 
     });
 
     return {
-        message: "Done"
-    }
+    token,
+    userId: session.user.id,
+    amount: amount * 100,
+  };
 }

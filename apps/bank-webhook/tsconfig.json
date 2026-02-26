@@ -1,8 +1,15 @@
 {
-  "extends": "@repo/typescript-config/base.json",
+  "extends": "../../packages/typescript-config/base.json", //"../../tsconfig.json",
   "compilerOptions": {
-    "outDir": "dist"
+    "outDir": "dist",
+    "rootDir": "src",
+    "baseUrl": ".",
+    "module": "node16",//"CommonJS",
+    "target": "ES2020",
+    "moduleResolution": "node16",
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "strict": true
   },
-  "include": ["src"],
-  "exclude": ["node_modules", "dist"]
+  "include": ["src"]
 }
