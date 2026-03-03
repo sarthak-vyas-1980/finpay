@@ -6,12 +6,6 @@ import prisma from "@repo/db/client";
 
 export const authOptions = {
   providers: [
-    //GOOGLE OAUTH (signin OR signup)
-    GoogleProvider({
-      clientId: process.env.GOOGLE_CLIENT_ID!,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
-    }),
-
     CredentialsProvider({
       name: "Credentials",
       credentials: {
@@ -20,7 +14,6 @@ export const authOptions = {
         password: { label: "Password", type: "password", required: true },
         mode: { label: "Mode", type: "text" }, // signup | signin
       },
-
       async authorize(credentials) {
         if (!credentials?.phone || !credentials?.password) return null;
 
@@ -52,7 +45,9 @@ export const authOptions = {
         // ---------- SIGN UP ----------
         if (credentials.mode === "signup") {
           if (!credentials.name) return null;
-          if (user) return null;
+          if (user) {
+            throw new Error("User already exists");
+          }
 
           const hashedPassword = await bcrypt.hash(
             credentials.password,
@@ -76,6 +71,11 @@ export const authOptions = {
 
         return null;
       },
+    }),
+    //GOOGLE OAUTH (signin OR signup)
+    GoogleProvider({
+      clientId: process.env.GOOGLE_CLIENT_ID!,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
     }),
   ],
   // callbacks: {
@@ -111,7 +111,7 @@ export const authOptions = {
       if (user) {
         // If credentials login, user.id already = DB id
         if (account?.provider === "credentials") {
-          token.dbId = user.id;
+          token.dbId = user.id.toString();
         }
 
         // If Google login, find DB user by email
@@ -125,7 +125,6 @@ export const authOptions = {
           }
         }
       }
-
       return token;
     },
 

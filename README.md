@@ -126,27 +126,6 @@ Shared Prisma client ensures:
 
 ---
 
-## 🔐 Concurrency Handling
-
-To prevent double spending:
-
-```sql
-SELECT * FROM "Balance" WHERE "userId" = ? FOR UPDATE;
-```
-
-Combined with:
-
-```ts
-await prisma.$transaction(...)
-```
-
-This ensures:
-- No race conditions
-- Atomic updates
-- Financial integrity
-
----
-
 ## 🏦 Payment Flow (Simulated)
 
 1. User clicks **Add Money**

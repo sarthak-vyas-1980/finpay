@@ -14,12 +14,13 @@ export default function Signup() {
       <div className="w-full max-w-md bg-white rounded-2xl shadow-xl p-10 space-y-6">
         <div>
           <h2 className="text-3xl font-bold text-gray-900 text-center">
-            Signin Account
+            Create Account
           </h2>
           <p className="text-sm text-gray-500 text-center mt-2">
-            Login with your credentials
+            Start your FinPay journey
           </p>
         </div>
+
         <InputBox
           label="Name"
           placeholder="Enter Name"
@@ -27,6 +28,7 @@ export default function Signup() {
             setPostInputs({ ...postInputs, name: e.target.value })
           }
         />
+
         <InputBox
           label="Phone"
           placeholder="Enter Phone"
@@ -34,6 +36,7 @@ export default function Signup() {
             setPostInputs({ ...postInputs, phone: e.target.value })
           }
         />
+
         <InputBox
           type="password"
           label="Password"
@@ -42,17 +45,18 @@ export default function Signup() {
             setPostInputs({ ...postInputs, password: e.target.value })
           }
         />
+
         <button
           onClick={async () => {
             await signIn("credentials", {
               ...postInputs,
-              mode: "signin",
+              mode: "signup",
               callbackUrl: "/dashboard",
             });
           }}
           className="w-full py-3 rounded-lg bg-blue-600 text-white font-semibold hover:bg-blue-700 transition-all duration-200 shadow-md"
         >
-          Sign In
+          Sign Up
         </button>
 
         <div className="flex items-center gap-4">
