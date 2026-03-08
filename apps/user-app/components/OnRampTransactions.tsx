@@ -1,5 +1,6 @@
 import { Card } from "@repo/ui/card"
 import { UPArrow } from "@repo/ui/icons"
+import Link from "next/link"
 
 export const OnRampTransactions = ({
     transactions
@@ -19,7 +20,7 @@ export const OnRampTransactions = ({
             </div>
         </Card>
     }
-    return <Card title="Recent Transactions">
+    return <Card title="Deposit Transactions">
         <div className="pt-2">
             {transactions.map(t => <div key={t.time.toISOString()} className="my-2 flex justify-between items-start">
                 <div className="flex">
@@ -46,6 +47,11 @@ export const OnRampTransactions = ({
             </div>
         
             </div>)}
+            <div className="flex justify-center mt-4">
+                <Link href="/transactions" className="text-blue-600 text-sm font-medium hover:underline" >
+                    View More
+                </Link>
+            </div>
         </div>
     </Card>
 }

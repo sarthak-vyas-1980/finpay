@@ -10,22 +10,22 @@ export default function Layout({
   return (
     <div>
       <AppbarClient />
-      <div className="flex">
-          <div className="flex flex-col justify-between w-72 bg-[#111827] border-r text-white border-slate-300 min-h-screen mr-4 pt-28">
-              <div>
-                  <SidebarItem href={"/dashboard"} icon={<HomeIcon />} title="Home" />
-                  <SidebarItem href={"/transfer"} icon={<TransferIcon />} title="Transfer" />
-                  <SidebarItem href={"/transactions"} icon={<TransactionsIcon />} title="Transactions" />
-                  <SidebarItem href={"/p2P"} icon={<P2PIcon />} title="P2P Transfer" />
-              </div>
-              <div className="mb-14">
-                <SidebarItem href={"/profile"} icon={<Profile />} title="Profile" />
-              </div>
+      <div className="flex pt-8">
+        <div className="fixed left-0 top-0 h-screen w-60 bg-[#111827] border-r flex pt-14 flex-col justify-between">
+          <div className="mt-24 flex flex-col gap-1 px-3">  
+            <SidebarItem href={"/dashboard"} icon={<HomeIcon />} title="Home" />
+            <SidebarItem href={"/transfer"} icon={<TransferIcon />} title="Transfer" />
+            <SidebarItem href={"/transactions"} icon={<TransactionsIcon />} title="Transactions" />
+            <SidebarItem href={"/p2P"} icon={<P2PIcon />} title="P2P Transfer" />
           </div>
+          <div className="pb-4 px-3">
+            <SidebarItem href={"/profile"} icon={<Profile />} title="Profile" />
+          </div>
+        </div>
+        <div className="ml-60 w-full p-8 overflow-x-hidden">
           {children}
+        </div>
       </div>
     </div>
   );
 }
-
-

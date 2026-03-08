@@ -130,7 +130,7 @@ export default function ProfilePage() {
                         style={{ width: `${completionPercentage}%` }}
                     ></div>
                 </div>
-                </div>
+            </div>
         )}
       </div>
     </div>

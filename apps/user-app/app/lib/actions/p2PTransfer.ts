@@ -2,8 +2,23 @@
 import { getServerSession } from "next-auth";
 import { authOptions } from "../auth";
 import prisma from "@repo/db/client";
+import { z } from "zod";
+
+const transferSchema = z.object({
+    to: z.string().min(10, "Invalid phone number").max(10, "Invalid phone number").regex(/^[0-9]+$/, "Phone must contain only digits"),
+    amount: z.number().positive("Amount must be positive").max(100000000, "Transfer amount too large") 
+});
 
 export async function p2PTransfer(to: string, amount: number) {
+    const parsed = transferSchema.safeParse({
+        to,
+        amount
+    });
+    if(!parsed.success){
+        return {
+            message: parsed.error.issues[0]?.message
+        };
+    }
     const session = await getServerSession(authOptions);
     const from = session?.user?.id;
     if (!from) {
@@ -16,23 +31,24 @@ export async function p2PTransfer(to: string, amount: number) {
             number: to
         }
     });
-
     if (!toUser) {
         return {
             message: "User not found"
         }
     }
+    if(Number(from) === toUser.id) return { message: "Cannot transfer to yourself" }
+
     await prisma.$transaction(async (tx) => {
         //Locking this transaction for particular user to prevent concurrent transaction:
         await tx.$queryRaw`SELECT * FROM "Balance" WHERE "userId" = ${Number(from)} FOR UPDATE`; 
         const fromBalance = await tx.balance.findUnique({
             where: { userId: Number(from) },
-          });
-          if (!fromBalance || fromBalance.amount < amount) {
+        });
+        if (!fromBalance || fromBalance.amount - fromBalance.locked < amount) {
             throw new Error('Insufficient funds');
-          }
+        }
 
-          await tx.balance.upsert({
+        await tx.balance.upsert({
             where: { userId: Number(from) },
                 update: {
                 amount: { decrement: amount },
@@ -42,10 +58,10 @@ export async function p2PTransfer(to: string, amount: number) {
                 amount: -amount,
                 locked: 0,
             },
-          });
+        });
 
 
-          await tx.balance.upsert({
+        await tx.balance.upsert({
             where: { userId: toUser.id },
             update: {
                 amount: { increment: amount },
@@ -55,16 +71,17 @@ export async function p2PTransfer(to: string, amount: number) {
                 amount,
                 locked: 0,
             },
-          });
+        });
 
 
-          await tx.p2PTransfer.create({
+        await tx.p2PTransfer.create({
             data : {
                 fromUserId: Number(from), 
                 toUserId: toUser.id,
                 amount,
                 timestamp: new Date(),
             }
-          })
+        })
     });
+    return { message: "Transfer successful" };
 }

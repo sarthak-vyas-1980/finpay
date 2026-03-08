@@ -15,6 +15,7 @@ async function getOnRampTransactions() {
         orderBy: {
             startTime: "desc",
         },
+        take: 5
     });
     return txns.map(t => ({
         time: t.startTime,
@@ -27,7 +28,7 @@ async function getOnRampTransactions() {
 export default async function() {
     const transactions = await getOnRampTransactions();
 
-    return <div className="w-screen">
+    return <div className="w-full">
         <div className="text-4xl text-[#20438e] pt-8 mb-8 font-bold">
             Transfer
         </div>
@@ -36,7 +37,7 @@ export default async function() {
                 <AddMoney />
             </div>
             <div>
-                <div className="pt-4 px-6">
+                <div className="px-6">
                     <OnRampTransactions transactions={transactions} />
                 </div>
             </div>

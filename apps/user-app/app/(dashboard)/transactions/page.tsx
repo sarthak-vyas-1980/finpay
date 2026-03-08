@@ -12,7 +12,7 @@ export default async function () {
             </div>
         </div>
     } 
-    return<div className="flex w-full justify-center items-center">
+    return<div className="mt-6 flex w-full justify-center items-center">
         <Card title="History">
             {transactions.map(txn => (
                 <div key={txn.time.toISOString()}>

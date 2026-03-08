@@ -1,38 +1,23 @@
 import { Card } from "@repo/ui/card";
-import { Center } from "@repo/ui/center";
 
 export const BalanceCard = ({amount, locked}: {
     amount: number;
     locked: number;
 }) => {
-    return<div className="h-[90vh]">
-        <Center>
+    return<div className="w-full">
         <Card title={"Balance"}>
-        <div className="flex justify-between py-2 gap-40 border-b border-slate-300 pb-2">
-            <div>
-                Unlocked balance
-            </div>
-            <div>
-                {amount / 100} INR
-            </div>
+        <div className="flex justify-between py-2 border-b border-slate-300 pb-2">
+            <div> Unlocked balance </div>
+            <div> {(amount - locked) / 100} INR </div>
         </div>
         <div className="flex justify-between border-b border-slate-300 py-2">
-            <div>
-                Total Locked Balance
-            </div>
-            <div>
-                {locked / 100} INR
-            </div>
+            <div> Locked Balance </div>
+            <div> {locked / 100} INR </div>
         </div>
         <div className="flex justify-between border-b border-slate-300 py-2">
-            <div>
-                Total Balance
-            </div>
-            <div>
-                {(locked + amount) / 100} INR
-            </div>
+            <div> Total Balance </div>
+            <div> {(amount) / 100} INR </div>
         </div>
         </Card>
-        </Center>
     </div>
 }
