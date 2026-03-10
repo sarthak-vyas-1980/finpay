@@ -9,8 +9,8 @@ export const TransactionCard = ({status, provider, upOrDown, amount, label, date
     provider?: string,
     status?: string
 }) => {
-    return <div>
-        <div className="flex justify py-2 gap-40 between">
+    return <div className="my-1">
+        <div className="flex justify-between">
             <div className="flex">
                 <div className={`mr-2 flex justify-center ${upOrDown==="+" ? "text-green-500" : "text-red-500" } items-center`}> {upOrDown==="+" ? <UPArrow /> : <DOWNArrow />} </div>
                 <div>
@@ -22,8 +22,8 @@ export const TransactionCard = ({status, provider, upOrDown, amount, label, date
             </div>
             <div className="flex justify-center items-center">
                 <div>
-                    <div>{upOrDown} ₹{amount/100}</div>
-                    <div className="text-slate-600">{status}</div>
+                    <div className="flex justify-end">{upOrDown} ₹{amount/100}</div>
+                    <div className="text-slate-600 text-sm">{status}</div>
                 </div>
             </div>
         </div><hr></hr>
