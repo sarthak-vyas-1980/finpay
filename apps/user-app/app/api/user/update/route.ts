@@ -17,6 +17,7 @@ type updateType = {
     email: string,
     number: string,
     password?: string,
+    avatar?: string
 }
 
 export const GET = async () => {
@@ -34,6 +35,7 @@ export const GET = async () => {
             email: true,
             number: true,
             password: true,
+            avatar: true,
         },
     })
     return NextResponse.json({
@@ -41,6 +43,7 @@ export const GET = async () => {
         name: user?.name,
         email: user?.email,
         number: user?.number,
+        avatar: user?.avatar,
         hasPassword: !!user?.password,
     });
 }

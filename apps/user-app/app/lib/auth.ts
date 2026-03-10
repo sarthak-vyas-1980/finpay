@@ -78,14 +78,7 @@ export const authOptions = {
       clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
     }),
   ],
-  // callbacks: {
-  //   async session({ session, token }: any) {
-  //     if (token?.sub && session.user) {
-  //       session.user.id = token.sub;
-  //     }
-  //     return session;
-  //   },
-  // },
+  
   callbacks: {
     async signIn({ user, account }: any) {
       // Only for Google OAuth
@@ -99,6 +92,7 @@ export const authOptions = {
             data: {
               name: user.name ?? "Google User",
               email: user.email,
+              avatar: user.image
             },
           });
         }
@@ -125,12 +119,21 @@ export const authOptions = {
           }
         }
       }
+      //ALWAYS fetch avatar from DB
+      if (token.dbId) {
+        const dbUser = await prisma.user.findUnique({
+          where: { id: Number(token.dbId) },
+          select: { avatar: true }
+        })
+        token.avatar = dbUser?.avatar
+      }
       return token;
     },
 
     async session({ session, token }: any) {
       if (session.user && token.dbId) {
         session.user.id = token.dbId;
+        session.user.avatar = token.avatar;
       }
       return session;
     },

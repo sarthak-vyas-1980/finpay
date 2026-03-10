@@ -1,8 +1,14 @@
 
-export function ProfileField({ label, value, edit, onChange }: any) {
+type profileFieldType = {
+    label: string,
+    value: string | null,
+    edit: boolean,
+    onChange: (e: any)=> void,
+}
+export function ProfileField({ label, value, edit, onChange }: profileFieldType) {
     return (
         <div className="mb-4">
-            <p className="text-sm text-gray-500">{label}</p>
+            <p className="text-sm text-gray-500">{!edit && label === "Name" ? "" : label} </p>
             {edit ? (
                 <input
                 defaultValue={value || ""}

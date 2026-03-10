@@ -1,8 +1,10 @@
 import { Button } from "./button";
+import Link from "next/link"
 
 interface AppbarProps {
     user?: {
         name?: string | null;
+        avatar?: string | null;
     },
     // TODO: can u figure out what the type should be here?
     onSignin: any,
@@ -24,8 +26,13 @@ export const Appbar = ({
                 </div>
             </div>
         </div>
-        <div className="flex flex-col justify-center pt-2">
-            <Button onClick={user ? onSignout : onSignin}>{user ? "Logout" : "Login"}</Button>
+        <div className="flex items-center justify-center pt-1">
+            <Link href="/profile">
+                <img src={user?.avatar || "/default_avatar.png"} className="mr-3 w-10 h-10 rounded-full" />
+            </Link>
+            <div className="pt-1">
+                <Button onClick={user ? onSignout : onSignin}>{user ? "Logout" : "Login"}</Button>
+            </div>
         </div>
     </div>
 }

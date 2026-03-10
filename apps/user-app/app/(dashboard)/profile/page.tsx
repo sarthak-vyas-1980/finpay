@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { ProfileField } from "../../../components/ProfileField";
 import { Button } from "@repo/ui/button";
 
@@ -8,6 +8,7 @@ type updateType = {
     name: string,
     email: string | null,
     number: string | null,
+    avatar?: string | null,
     hasPassword: boolean,
     password?: string
 }
@@ -15,9 +16,13 @@ type updateType = {
 export default function ProfilePage() {
     const [user, setUser] = useState<updateType | null>(null);
     const [originalUser, setOriginalUser] = useState<updateType | null>(null);
+    const [file,setFile] = useState<File | null>(null)
+    const [preview, setPreview] = useState<string | null>(null);
     const [edit, setEdit] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const [success, setSuccess] = useState<string | null>(null);
+
+    const fileInputRef = useRef<HTMLInputElement>(null);
 
     useEffect(() => {
         fetch("/api/user/update")
@@ -28,16 +33,46 @@ export default function ProfilePage() {
         });
     }, []);
 
+    function handleAvatarClick() {
+        fileInputRef.current?.click();
+    }
+    function handleFileChange(e: any) {
+        const selected = e.target.files?.[0];
+        if (!selected) return;
+
+        setFile(selected);
+        setPreview(URL.createObjectURL(selected));
+    }
+    async function upload(){
+        if(!file) return
+        const formData = new FormData()
+        formData.append("avatar",file)
+
+        const res = await fetch("/api/user/avatar",{
+            method:"POST",
+            body:formData
+        })
+        const data = await res.json()
+        setUser(prev => prev ? {...prev, avatar:data.avatar} : prev)
+        setOriginalUser(prev => prev ? {...prev, avatar:data.avatar} : prev)
+        setFile(null);
+        setPreview(null);
+    }
     const filledFields = [
         user?.name,
         user?.email,
         user?.number,
         user?.hasPassword
     ].filter(Boolean).length;
-    const completionPercentage = Math.round((filledFields / 4) * 100);
-    let hasChanged: boolean = JSON.stringify(user) !== JSON.stringify(originalUser);
 
-    if (!user) return <div className="flex justify-center items-center p-10 max-w-2xl mx-auto">
+    const completionPercentage = Math.round((filledFields / 4) * 100);
+    const hasChanged =
+        user?.name !== originalUser?.name ||
+        user?.email !== originalUser?.email ||
+        user?.number !== originalUser?.number ||
+        user?.password;
+
+    if (!user) return <div className="flex justify-center items-center h-[80vh] p-10 max-w-2xl mx-auto">
         <div role="status">
             <svg aria-hidden="true" className="w-8 h-8 text-neutral-tertiary animate-spin fill-brand" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="currentColor"/>
@@ -63,11 +98,30 @@ export default function ProfilePage() {
                 {edit ? "Cancel" : "Edit"}
             </button>
         </div>
-        <hr></hr>
-        <div className="mt-3"></div>
-        <ProfileField label="Name" value={user.name} edit={edit}
-            onChange={(val:any)=>setUser({...user,name:val})} />
+        <hr className="mb-6" />
 
+        <div className="flex flex-col items-center gap-3 mb-6">
+            <img src={preview || user.avatar || "/default_avatar.png"}
+                onClick={handleAvatarClick}
+                className="w-32 h-32 rounded-full object-cover border-2 border-gray-200 cursor-pointer hover:scale-105 transition"
+            />
+            {edit && 
+                <input type="file" ref={fileInputRef} onChange={handleFileChange} className="hidden"/>
+            }
+            {file && (
+                <button onClick={upload} className="bg-blue-500 text-white px-4 py-1 rounded-md hover:bg-blue-600" >
+                    Upload Avatar
+                </button>
+            )}
+        </div>
+
+        {!edit ? <div className="text-center">
+            <ProfileField label="Name" value={user.name} edit={edit}
+                onChange={(val:any)=>setUser({...user,name:val})} />
+            </div>
+            : <ProfileField label="Name" value={user.name} edit={edit} onChange={(val:any)=>setUser({...user,name:val})} />
+        }
+        <div className="mt-3"></div>
         <ProfileField label="Email" value={user.email} edit={edit}
             onChange={(val:any)=>setUser({...user,email:val})} />
 
