@@ -8,6 +8,29 @@ This project demonstrates **real-world fintech backend architecture, database co
 
 ---
 
+# 📷 Application Preview
+
+<p align="center">
+  <img src="./screenshots/landing.png" width="80%">
+</p>
+
+<p align="center">
+  <img src="./screenshots/dashboard.png" width="45%">
+  <img src="./screenshots/transactions.png" width="45%">
+</p>
+
+<p align="center">
+  <img src="./screenshots/p2pTransfer.png" width="45%">
+  <img src="./screenshots/addMoney.png" width="45%">
+</p>
+
+<p align="center">
+  <img src="./screenshots/profile.png" width="45%">
+  <img src="./screenshots/signin.png" width="45%">
+</p>
+
+---
+
 # 🚀 Features
 
 ## 🔐 Authentication
@@ -38,8 +61,6 @@ Spendable Balance = amount - locked
 - Prevent spending locked funds
 - Real-time balance updates
 
-This structure enables advanced features such as **fund reservation and transaction safety.**
-
 ---
 
 ## 🔁 P2P Transfers
@@ -49,20 +70,25 @@ Users can send money to another user using their **phone number**.
 ### Safety Features
 
 - Row-level locking to prevent race conditions
+
+```sql
+SELECT * FROM "Balance"
+WHERE "userId" = $1
+FOR UPDATE
+```
+
 - Atomic database updates using **Prisma `$transaction`**
 - Insufficient balance validation
 - Self-transfer protection
 - Automatic transaction history tracking
 
-This ensures **safe concurrent transactions similar to real fintech systems.**
-
 ---
 
 ## 🏦 Bank On-Ramp Simulation
 
-FinPay simulates **adding money through a bank payment flow.**
+Simulates adding money through a **bank payment flow**.
 
-### Payment Flow
+### Flow
 
 1. User clicks **Add Money**
 2. `OnRampTransaction` created with **Processing** state
@@ -70,13 +96,13 @@ FinPay simulates **adding money through a bank payment flow.**
 4. Bank confirms payment via **webhook**
 5. Wallet balance updated
 6. Transaction status → **Success**
-7. User redirected back to **dashboard**
+7. User redirected back to dashboard
 
 ---
 
 ## 🔔 Webhook Architecture
 
-A dedicated **bank simulation server built with Express** handles payment confirmations.
+A dedicated **bank simulation server built with Express**.
 
 ### Responsibilities
 
@@ -85,13 +111,13 @@ A dedicated **bank simulation server built with Express** handles payment confir
 - Update wallet balances
 - Mark transactions as successful
 
-This replicates **real fintech webhook-based payment architecture.**
+This replicates **real fintech webhook architecture**.
 
 ---
 
 ## 📊 Dashboard Analytics
 
-The dashboard provides real-time financial insights:
+Interactive dashboard showing:
 
 - Wallet balance
 - Monthly spending
@@ -99,13 +125,11 @@ The dashboard provides real-time financial insights:
 - Weekly spending chart
 - Locked vs available funds
 
-Charts help users quickly understand their **financial activity trends.**
-
 ---
 
 ## 🔒 Balance Locking System
 
-Users can **lock part of their wallet balance.**
+Users can lock part of their wallet balance.
 
 Locked funds:
 
@@ -113,7 +137,7 @@ Locked funds:
 - Remain reserved
 - Can be unlocked anytime
 
-### Real-world use cases
+Used for:
 
 - Payment holds
 - Security reserves
@@ -123,15 +147,15 @@ Locked funds:
 
 ## 📜 Transaction History
 
-FinPay maintains a **unified transaction history** combining:
+Unified transaction system combining:
 
 ### On-Ramp Transactions
-Money added via bank payments.
+Money added from bank.
 
 ### P2P Transfers
 Money sent or received between users.
 
-### Features
+Features:
 
 - Chronologically sorted
 - Direction aware (**Sent / Received**)
@@ -141,7 +165,7 @@ Money sent or received between users.
 
 ## 🔎 Transaction Search & Filters
 
-Users can explore transactions using powerful filters.
+Users can explore transaction history using:
 
 ### Search
 
@@ -154,60 +178,54 @@ Users can explore transactions using powerful filters.
 - Sent / Received
 - On-ramp payments
 
-Results update instantly in the UI.
-
 ---
 
-## ⚠️ Transfer Safety Mechanisms
+## ⚠️ Transfer Safety Features
 
-To prevent invalid operations and fraud:
+To prevent invalid operations:
 
 - Insufficient balance validation
 - Locked funds cannot be transferred
-- Self-transfer prevention
-- Database locking for concurrency safety
+- Self-transfer protection
+- Transaction locking for concurrency safety
 
 ---
 
 ## 👤 User Profile System
 
-Users can manage personal information securely.
+Users can manage their personal information.
 
-### Profile Features
+Profile Features:
 
 - Edit name
 - Update phone number
 - Change password
 - Profile completion tracker
 
-All updates are handled through **secure server APIs.**
-
 ---
 
 ## 🖼 Avatar Upload
 
-Users can upload profile pictures.
+Users can upload a profile picture.
 
-### Implementation
+Implementation:
 
-- Images uploaded to **Cloudinary**
+- Image uploaded to **Cloudinary**
 - Avatar URL stored in database
-- Displayed in the application navbar
-- Default avatar fallback provided
-
-Using Cloudinary removes the need for **manual file storage management during deployment.**
+- Displayed in the navbar
+- Default avatar fallback
 
 ---
 
 ## 🪟 Transfer Confirmation Modal
 
-Before sending money, users see a confirmation prompt.
+Before sending money users see confirmation:
 
 ```
 Send ₹500 to Rahul?
 ```
 
-This helps prevent **accidental transfers and improves UX.**
+Prevents accidental transfers.
 
 ---
 
@@ -224,6 +242,8 @@ finpay/
 │   ├── db              (Shared Prisma client)
 │   ├── ui              (Reusable UI components)
 │   ├── typescript-config
+│
+├── screenshots/
 │
 ├── turbo.json
 └── package.json
@@ -358,7 +378,7 @@ npx prisma generate
 
 ---
 
-## 5️⃣ Start User Application
+## 5️⃣ Start User App
 
 ```bash
 cd apps/user-app
@@ -377,7 +397,6 @@ http://localhost:3001
 
 ```bash
 cd apps/bank-webhook
-
 npm run build
 node dist/index.js
 ```
@@ -392,9 +411,9 @@ http://localhost:3003
 
 # 🎯 Why This Project Stands Out
 
-This project demonstrates **real fintech engineering patterns**, not just CRUD functionality.
+This project demonstrates **real fintech engineering patterns**, not just CRUD.
 
-### Highlights
+Highlights:
 
 - Transactional database safety
 - Concurrency control with **row locking**
