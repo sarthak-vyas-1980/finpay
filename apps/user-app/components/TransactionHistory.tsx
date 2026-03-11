@@ -54,7 +54,7 @@ export default function TransactionHistory({ transactions }: { transactions: Tra
 
     return (
         <div>
-            <input placeholder="Search name, phone, bank, amount..." value={search} className="border p-2 rounded w-full mb-4"
+            <input placeholder="Search name, phone, bank, amount..." value={search} className="border dark:border-slate-700 dark:bg-slate-900 dark:text-gray-200 p-2 rounded w-full mb-4"
                 onChange={(e) => setSearch(e.target.value)}
             />
 
@@ -64,7 +64,7 @@ export default function TransactionHistory({ transactions }: { transactions: Tra
                     <button key={f}
                         onClick={() => setFilter(f as Filter)}
                         className={`px-3 py-1 rounded ${
-                            filter === f ? "bg-blue-500 text-white" : "bg-gray-200"
+                            filter === f ? "bg-blue-500 text-white" : "bg-gray-200 dark:bg-slate-700 dark:text-gray-200"
                         }`}
                     >
                         {f}
@@ -88,4 +88,3 @@ export default function TransactionHistory({ transactions }: { transactions: Tra
         </div>
     );
 }
-    

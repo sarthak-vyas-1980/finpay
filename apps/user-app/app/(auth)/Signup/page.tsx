@@ -10,13 +10,13 @@ export default function Signup() {
   });
 
   return (
-    <div className="h-screen flex items-center justify-center bg-gray-50 px-6">
-      <div className="w-full max-w-md bg-white rounded-2xl shadow-xl p-10 space-y-6">
+    <div className="h-screen flex items-center justify-center bg-gray-50 dark:bg-slate-900 px-6">
+      <div className="w-full max-w-md bg-white dark:bg-slate-800 rounded-2xl shadow-xl p-10 space-y-6">
         <div>
-          <h2 className="text-3xl font-bold text-gray-900 text-center">
+          <h2 className="text-3xl font-bold text-gray-900 dark:text-gray-100 text-center">
             Create Account
           </h2>
-          <p className="text-sm text-gray-500 text-center mt-2">
+          <p className="text-sm text-gray-500 dark:text-gray-300 text-center mt-2">
             Start your FinPay journey
           </p>
         </div>
@@ -67,7 +67,7 @@ export default function Signup() {
 
         <button
           onClick={() => signIn("google", { callbackUrl: "/dashboard" })}
-          className="w-full py-3 rounded-lg border border-gray-300 bg-white hover:bg-gray-100 transition-all font-medium flex items-center justify-center gap-3"
+          className="w-full py-3 rounded-lg border border-gray-300 dark:border-slate-700 bg-white dark:bg-slate-800 hover:bg-gray-100 transition-all font-medium flex items-center justify-center gap-3"
         >
           <img src="/google.jpg" alt="Google" className="w-5 h-5" />
           Continue with Google
@@ -96,7 +96,7 @@ function InputBox({
         type={type}
         onChange={onChange}
         placeholder={placeholder}
-        className="w-full px-4 py-2.5 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all"
+        className="w-full px-4 py-2.5 rounded-lg border border-gray-300 dark:border-slate-700 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all"
         required
       />
     </div>

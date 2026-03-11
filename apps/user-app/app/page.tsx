@@ -92,7 +92,7 @@ export default async function Page() {
         </p>
       </section>
 
-      <footer className="text-center pb-10 text-gray-500 text-sm border-t border-slate-800 pt-8">
+      <footer className="text-center pb-10 text-gray-500 dark:text-gray-300 text-sm border-t border-slate-800 dark:border-slate-700 pt-8">
         © {new Date().getFullYear()} FinPay. Built for modern payments.
       </footer>
     </main>
@@ -101,7 +101,7 @@ export default async function Page() {
 
 function Feature({ title, desc }: { title: string; desc: string }) {
   return (
-    <div className="bg-[#1e293b] rounded-2xl p-8 border border-slate-700 hover:border-blue-500 transition shadow-lg">
+    <div className="bg-[#1e293b] rounded-2xl p-8 border border-slate-700 dark:border-slate-700 hover:border-blue-500 transition shadow-lg">
       <h3 className="text-xl font-semibold text-blue-400">{title}</h3>
       <p className="mt-4 text-gray-300 leading-relaxed">{desc}</p>
     </div>

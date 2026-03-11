@@ -3,7 +3,7 @@ import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer} from "rech
 
 export default function SpendingChart({data} : {data:any[]}){
   return (
-    <div className="bg-white rounded-xl shadow-md p-4 transition duration-200 hover:shadow-lg">
+    <div className="bg-white border dark:border-slate-700 dark:text-gray-200 dark:bg-slate-800 rounded-xl shadow-md p-4 transition duration-200 hover:shadow-lg">
       <h2 className="text-lg font-semibold mb-4">Weekly Spending</h2>
       <ResponsiveContainer width="100%" height={290}>
         <LineChart data={data}>

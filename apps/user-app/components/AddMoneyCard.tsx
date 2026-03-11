@@ -34,7 +34,7 @@ export const AddMoney = () => {
             value: x.name
         }))} />
         <div className="flex justify-center pt-4">
-            <Button onClick={async () => {
+            <Button isDisabled={!value} onClick={async () => {
                 const response = await createOnRampTransaction(provider, value);
 
                 if (!response?.token) {
