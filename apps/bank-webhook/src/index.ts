@@ -12,7 +12,7 @@ app.post("/confirm-payment", async (req, res) => {
   const { token, user_identifier, amount } = req.body;
 
   try {
-    await db.$transaction(async (tx) => {
+    await db.$transaction(async (tx: any) => {
       const transaction = await tx.onRampTransaction.findUnique({
         where: { token },
       });
