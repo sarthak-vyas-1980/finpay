@@ -46,7 +46,7 @@ app.post("/confirm-payment", async (req, res) => {
   }
 });
 
-const port = process.env.PORT || 3005;
-app.listen(port, () => {
-  console.log(`Bank webhook running on port ${port}`);
+const PORT = process.env.PORT || 3005;
+app.listen(PORT, () => {
+  console.log(`Bank webhook running on port ${PORT}`);
 });
