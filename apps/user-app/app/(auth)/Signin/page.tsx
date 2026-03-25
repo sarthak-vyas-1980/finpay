@@ -1,8 +1,11 @@
 "use client";
 import { useState } from "react";
 import { signIn } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 export default function Signup() {
+  const router = useRouter();
+  const [error, setError] = useState<string | null>(null);
   const [postInputs, setPostInputs] = useState({
     name: "",
     phone: "",
@@ -11,13 +14,19 @@ export default function Signup() {
 
   return (
     <div className="h-screen flex items-center justify-center bg-gray-50 dark:bg-slate-900 px-6">
-      <div className="w-full max-w-md bg-white dark:bg-slate-800 rounded-2xl shadow-xl p-10 space-y-6">
+      <div className="w-full max-w-md bg-white dark:bg-slate-800 rounded-2xl shadow-xl px-10 py-6 space-y-6">
         <div>
-          <h2 className="text-3xl font-bold text-gray-900 dark:text-gray-100 text-center">
+          <div className="text-3xl font-bold text-gray-900 dark:text-gray-100 text-center">
             Signin Account
-          </h2>
+          </div>
           <p className="text-sm text-gray-500 dark:text-gray-300 text-center mt-2">
-            Login with your credentials
+            Create a new account?
+            <span
+              onClick={() => router.push("/Signup")} 
+              className="ml-1 text-blue-500 hover:underline cursor-pointer"
+            >
+              Sign up
+            </span>
           </p>
         </div>
         <InputBox
@@ -44,11 +53,16 @@ export default function Signup() {
         />
         <button
           onClick={async () => {
-            await signIn("credentials", {
+            const res = await signIn("credentials", {
               ...postInputs,
               mode: "signin",
-              callbackUrl: "/dashboard",
+              redirect: false
             });
+            if (res?.error) {
+              setError(res.error);
+            } else {
+              router.push("/dashboard");
+            }
           }}
           className="w-full py-3 rounded-lg bg-blue-600 text-white font-semibold hover:bg-blue-700 transition-all duration-200 shadow-md"
         >
@@ -68,10 +82,17 @@ export default function Signup() {
           <img src="/google.jpg" alt="Google" className="w-5 h-5" />
           Continue with Google
         </button>
+
+        {error && (
+          <div className="text-red-500 text-sm mt-2 text-center">
+            {error}
+          </div>
+        )}
       </div>
     </div>
   );
 }
+
 type LabelledInput = {
   label: string;
   placeholder: string;

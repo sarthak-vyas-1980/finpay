@@ -3,10 +3,10 @@ import db from "@repo/db/client";
 import cors from "cors";
 
 const app = express();
-app.use(cors());
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static("public"));
+app.use(cors({ origin: "*" }));
 
 app.post("/confirm-payment", async (req, res) => {
   const { token, user_identifier, amount } = req.body;
@@ -45,6 +45,8 @@ app.post("/confirm-payment", async (req, res) => {
     res.status(500).send("Payment Failed");
   }
 });
-app.listen(3005, () => {
-  console.log("Bank webhook running on port 3005");
+
+const port = process.env.PORT || 3005;
+app.listen(port, () => {
+  console.log(`Bank webhook running on port ${port}`);
 });

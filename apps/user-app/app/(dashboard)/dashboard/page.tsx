@@ -44,7 +44,7 @@ export default async function Dashboard() {
   return (
     <div className="mt-4 max-w-6xl mx-auto">
       {completion < 100 && (
-        <div className="bg-yellow-50 dark:bg-yellow-900 border dark:border-slate-700 border-yellow-200 dark:border-yellow-600 p-4 rounded-lg flex justify-between">
+        <div className="bg-yellow-50 dark:bg-yellow-900 border  border-yellow-200 dark:border-yellow-600 p-4 rounded-lg flex justify-between">
           <div>
             <p className="font-medium text-yellow-800 dark:text-yellow-200">
               {" "}

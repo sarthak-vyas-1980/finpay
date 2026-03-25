@@ -1,6 +1,5 @@
 import GoogleProvider from "next-auth/providers/google";
 import CredentialsProvider from "next-auth/providers/credentials";
-import db from "@repo/db/client";
 import bcrypt from "bcrypt";
 import prisma from "@repo/db/client";
 
@@ -16,25 +15,32 @@ export const authOptions = {
       },
       async authorize(credentials) {
         if (!credentials?.phone || !credentials?.password) return null;
+        if (credentials.password.length < 6) {
+          throw new Error("Password must be at least 6 characters");
+        }
+        if (credentials.phone.length !== 10) {
+          throw new Error("Phone number must be 10 digits");
+        }
 
-        const user = await db.user.findFirst({
+        const user = await prisma.user.findFirst({
           where: { number: credentials.phone },
         });
 
         // ---------- SIGN IN ----------
         if (credentials.mode === "signin") {
-          if (!user) return null;
+          if (!user) throw new Error("User not found");
+
 
           if (!user.password) {
-            return null;
-          }
+            if (!user) throw new Error("Account created using Google. Please sign in with Google.");
 
+          }
           const valid = await bcrypt.compare(
             credentials.password,
-            user.password
+            user.password as string
           );
 
-          if (!valid) return null;
+          if (!valid) throw new Error("Invalid phone or password");
 
           return {
             id: user.id.toString(),
@@ -54,7 +60,7 @@ export const authOptions = {
             10
           );
 
-          const newUser = await db.user.create({
+          const newUser = await prisma.user.create({
             data: {
               name: credentials.name,
               number: credentials.phone,
@@ -84,7 +90,7 @@ export const authOptions = {
       // Only for Google OAuth
       if (account?.provider === "google") {
         const existingUser = await prisma.user.findFirst({
-          where: { email: user.email! },
+          where: { email: user.email ?? "" },
         });
 
         if (!existingUser) {
@@ -120,7 +126,7 @@ export const authOptions = {
         }
       }
       //ALWAYS fetch avatar from DB
-      if (token.dbId) {
+      if (token.dbId && !token.avatar) {
         const dbUser = await prisma.user.findUnique({
           where: { id: Number(token.dbId) },
           select: { avatar: true }

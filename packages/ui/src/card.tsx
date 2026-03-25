@@ -12,7 +12,7 @@ export function Card({
       <h1 className="text-xl font-bold border-b dark:border-b-slate-600 pb-2">
         {title}
       </h1>
-      <p>{children}</p>
+      <div>{children}</div>
     </div>
   );
 }

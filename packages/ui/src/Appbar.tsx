@@ -65,7 +65,7 @@ export const Appbar = ({ user, onSignin, onSignout }: AppbarProps) => {
             className="mx-3 w-10 h-10 rounded-full"
           />
         </Link>
-        <div className="mt-1 text-white bg-red-500 hover:bg-[#374151] focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2">
+        <div className="mt-1 text-white bg-red-500 hover:bg-red-600 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2">
           <button onClick={user ? onSignout : onSignin}>
             {user ? "Logout" : "Login"}
           </button>
