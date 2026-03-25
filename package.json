@@ -2,6 +2,7 @@
   "name": "week-18",
   "private": true,
   "scripts": {
+    "postinstall": "prisma generate",
     "build": "turbo build",
     "dev": "turbo dev",
     "lint": "turbo lint",
@@ -22,5 +23,8 @@
   "workspaces": [
     "apps/*",
     "packages/*"
-  ]
+  ],
+  "dependencies": {
+    "@prisma/client": "^7.5.0"
+  }
 }
