@@ -19,8 +19,18 @@ app.post("/confirm-payment", async (req, res) => {
         where: { token },
       });
 
-      if (!transaction || transaction.status !== "Processing") {
-        throw new Error("Invalid transaction");
+      console.log("TRANSACTION:", transaction);
+
+      if (!transaction) {
+        throw new Error("Transaction not found");
+      }
+
+      if (transaction.status === "Success") {
+        return;
+      }
+
+      if (transaction.status !== "Processing") {
+        throw new Error("Invalid transaction state");
       }
 
       await tx.balance.upsert({
@@ -40,13 +50,50 @@ app.post("/confirm-payment", async (req, res) => {
         data: { status: "Success" },
       });
     });
-    console.log(`Payment successful for user ${user_identifier} with amount ${amount}`);
-    res.redirect("https://finpay.vercel.app/dashboard");
+
+    res.redirect("http://localhost:3001/dashboard");
   } catch (e) {
-    console.error(e);
+    console.error("ERROR:", e);
     res.status(500).send("Payment Failed");
   }
 });
+// app.post("/confirm-payment", async (req, res) => {
+//   const { token, user_identifier, amount } = req.body;
+
+//   try {
+//     await db.$transaction(async (tx: any) => {
+//       const transaction = await tx.onRampTransaction.findUnique({
+//         where: { token },
+//       });
+
+//       if (!transaction || transaction.status !== "Processing") {
+//         throw new Error("Invalid transaction");
+//       }
+
+//       await tx.balance.upsert({
+//         where: { userId: Number(user_identifier) },
+//         update: {
+//           amount: { increment: Number(amount) },
+//         },
+//         create: {
+//           userId: Number(user_identifier),
+//           amount: Number(amount),
+//           locked: 0,
+//         },
+//       });
+
+//       await tx.onRampTransaction.update({
+//         where: { token },
+//         data: { status: "Success" },
+//       });
+//     });
+//     console.log(`Payment successful for user ${user_identifier} with amount ${amount}`);
+//     res.redirect("https://finpay.vercel.app/dashboard");
+//   } catch (e) {
+//     console.error(e);
+//     res.status(500).send("Payment Failed");
+//   }
+// });
 
 const PORT = process.env.PORT || 3005;
 app.listen(PORT, () => {
