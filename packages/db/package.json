@@ -11,11 +11,16 @@
     "main": "dist/index.js",
     "types": "dist/index.d.ts",
     "exports": {
-        "./client": {
-            "require": "./dist/index.js",
-            "import": "./dist/index.js",
-            "types": "./dist/index.d.ts"
-        }
+    ".": {
+        "require": "./dist/index.js",
+        "import": "./dist/index.js",
+        "types": "./dist/index.d.ts"
+    },
+    "./client": {
+        "require": "./dist/index.js",
+        "import": "./dist/index.js",
+        "types": "./dist/index.d.ts"
+    }
     },
     "prisma": {
         "seed": "ts-node prisma/seed.ts"

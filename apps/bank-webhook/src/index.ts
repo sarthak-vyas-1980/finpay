@@ -1,5 +1,5 @@
 import express from "express";
-import db from "@repo/db/client";
+import db from "@repo/db";
 import cors from "cors";
 import path from "path";
 
