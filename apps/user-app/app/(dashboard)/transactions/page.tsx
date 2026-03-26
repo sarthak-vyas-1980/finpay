@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 import { Card } from "@repo/ui/card";
 import { getAllTransactions } from "../../lib/actions/getAllTransactions";
 import TransactionHistory from "../../../components/TransactionHistory";
