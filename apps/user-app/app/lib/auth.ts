@@ -28,19 +28,23 @@ export const authOptions = {
 
         // ---------- SIGN IN ----------
         if (credentials.mode === "signin") {
-          if (!user) throw new Error("User not found");
-
-
-          if (!user.password) {
-            if (!user) throw new Error("Account created using Google. Please sign in with Google.");
-
+          if (!user) {
+            throw new Error("User not found");
           }
+
+          // 🔥 FIX: handle Google-only users properly
+          if (!user.password) {
+            throw new Error("This account was created using Google. Please sign in with Google.");
+          }
+
           const valid = await bcrypt.compare(
             credentials.password,
-            user.password as string
+            user.password
           );
 
-          if (!valid) throw new Error("Invalid phone or password");
+          if (!valid) {
+            throw new Error("Invalid phone or password");
+          }
 
           return {
             id: user.id.toString(),

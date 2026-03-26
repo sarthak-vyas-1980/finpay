@@ -1,10 +1,12 @@
 import express from "express";
 import db from "@repo/db/client";
 import cors from "cors";
+import path from "path";
 
 const app = express();
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }));
+app.use(express.static(path.join(__dirname, "../public")));
 app.use(express.static("public"));
 app.use(cors({ origin: "*" }));
 
@@ -39,7 +41,7 @@ app.post("/confirm-payment", async (req, res) => {
       });
     });
 
-    res.redirect("http://localhost:3001/dashboard");
+    res.redirect("https://finpay.vercel.app/dashboard");
   } catch (e) {
     console.error(e);
     res.status(500).send("Payment Failed");
