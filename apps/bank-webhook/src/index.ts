@@ -40,7 +40,7 @@ app.post("/confirm-payment", async (req, res) => {
         data: { status: "Success" },
       });
     });
-
+    console.log(`Payment successful for user ${user_identifier} with amount ${amount}`);
     res.redirect("https://finpay.vercel.app/dashboard");
   } catch (e) {
     console.error(e);
