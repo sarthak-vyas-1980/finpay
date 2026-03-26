@@ -4,7 +4,7 @@
   "description": "",
   "main": "dist/index.js",
   "scripts": {
-    "build": "esbuild ./src/index.ts --bundle --platform=node --outfile=dist/index.js --external:@prisma/client && copyfiles -u 1 public/**/* dist/",
+    "build": "esbuild ./src/index.ts --bundle --platform=node --outfile=dist/index.js --external:@prisma/client --external:@repo/db && copyfiles -u 1 public/**/* dist/",
     "start": "node dist/index.js",
     "dev": "npm run build && npm run start"
   },
