@@ -3,11 +3,10 @@ const nextConfig = {
   experimental: {
     externalDir: true,
   },
+  webpack: (config) => {
+    config.externals.push("@prisma/client");
+    return config;
+  },
 };
 
 module.exports = nextConfig;
-
-// /** @type {import('next').NextConfig} */
-// module.exports = {
-//   transpilePackages: ["@repo/ui"],
-// };
