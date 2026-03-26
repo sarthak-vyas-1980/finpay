@@ -1,4 +1,4 @@
-import prisma from "@repo/db/client";
+import prisma from "@repo/db";
 
 export async function getMonthlySpending(userId: number) {
   const startOfMonth = new Date();

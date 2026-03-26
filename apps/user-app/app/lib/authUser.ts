@@ -1,6 +1,6 @@
 import { getServerSession } from "next-auth";
 import { authOptions } from "./auth";
-import prisma from "@repo/db/client";
+import prisma from "@repo/db";
 
 export async function getCurrentUser() {
   const session = await getServerSession(authOptions);

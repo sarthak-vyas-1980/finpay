@@ -1,4 +1,4 @@
-import prisma from "@repo/db/client";
+import prisma from "@repo/db";
 
 export async function getProfileCompletion(userId: number) {
     const user = await prisma.user.findUnique({

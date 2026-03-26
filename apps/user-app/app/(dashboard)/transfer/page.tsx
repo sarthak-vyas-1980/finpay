@@ -1,4 +1,4 @@
-import prisma from "@repo/db/client";
+import prisma from "@repo/db";
 import { AddMoney } from "../../../components/AddMoneyCard";
 import { OnRampTransactions } from "../../../components/OnRampTransactions";
 import { getCurrentUser } from "../../lib/authUser";

@@ -1,5 +1,5 @@
 import GoogleProvider from "next-auth/providers/google";
-import db from "@repo/db/client";
+import db from "@repo/db";
 import { AuthType } from "@prisma/client";
 
 export const authOptions = {
