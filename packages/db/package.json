@@ -24,7 +24,6 @@
         "seed": "ts-node prisma/seed.ts"
     },
     "scripts": {
-        "build": "tsc",
-        "postinstall": "npx prisma generate"
+        "build": "prisma generate && tsc"
     }
 }
