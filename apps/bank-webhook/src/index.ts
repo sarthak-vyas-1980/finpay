@@ -18,8 +18,6 @@ app.post("/confirm-payment", async (req, res) => {
         where: { token },
       });
 
-      console.log("TRANSACTION:", transaction);
-
       if (!transaction) {
         throw new Error("Transaction not found");
       }
