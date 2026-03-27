@@ -6,7 +6,7 @@ const nextConfig = {
   transpilePackages: ["@repo/db", "@repo/ui", "@repo/store"],
 
   webpack: (config) => {
-    config.externals = config.externals || [];
+    config.externals.push("@prisma/client");
     return config;
   },
 };
