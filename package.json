@@ -23,8 +23,8 @@
     "packages/*"
   ],
   "dependencies": {
+    "turbo": "latest",
     "@prisma/client": "^5.11.0",
-    "prisma": "^5.11.0",
-    "turbo": "latest"
+    "prisma": "^5.11.0"
   }
 }

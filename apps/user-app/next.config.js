@@ -1,9 +1,8 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   experimental: {
-    externalDir: true,
-  },
-  transpilePackages: ["@repo/db", "@repo/ui", "@repo/store"]
+    serverComponentsExternalPackages: ["@prisma/client"]
+  }
 };
 
 module.exports = nextConfig;
