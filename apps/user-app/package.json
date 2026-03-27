@@ -6,7 +6,8 @@
     "dev": "next dev --port 3001",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint . --max-warnings 0"
+    "lint": "eslint . --max-warnings 0",
+    "postinstall": "prisma generate --schema=../../packages/db/prisma/schema.prisma"
   },
   "dependencies": {
     "@repo/store": "*",
@@ -23,8 +24,7 @@
     "react-dom": "^18.2.0",
     "recharts": "^3.7.0",
     "zod": "^4.3.6",
-    "@prisma/client": "^5.11.0",
-    "prisma": "^5.11.0"
+    "@prisma/client": "^5.11.0"
   },
   "devDependencies": {
     "@next/eslint-plugin-next": "^14.1.1",
@@ -34,6 +34,7 @@
     "@types/node": "^20.11.24",
     "@types/react": "^18.2.61",
     "@types/react-dom": "^18.2.19",
+    "prisma": "^5.11.0",
     "autoprefixer": "^10.4.19",
     "eslint": "^8.57.0",
     "postcss": "^8.4.38",
