@@ -48,7 +48,7 @@ app.post("/confirm-payment", async (req, res) => {
     });
 
     console.log(`✅ Payment success for user ${user_identifier}`);
-    res.redirect("https://finpay.vercel.app/dashboard");
+    res.redirect("https://finpay-user-app.vercel.app/dashboard");
 
   } catch (e) {
     console.error("ERROR:", e);

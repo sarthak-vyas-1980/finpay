@@ -3,8 +3,7 @@
   "compilerOptions": {
     "outDir": "dist",
     "rootDir": "src",
-    "baseUrl": ".",
-    "module": "node16",//"CommonJS",
+    "module": "node16", //"CommonJS",
     "target": "ES2020",
     "moduleResolution": "node16",
     "esModuleInterop": true,
