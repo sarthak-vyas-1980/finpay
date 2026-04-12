@@ -10,13 +10,7 @@ const nextConfig = {
     outputFileTracingRoot: path.join(__dirname, "../../"),
 
     // Prisma is Node-only; keep it external for Server Components.
-    serverComponentsExternalPackages: ["@prisma/client"],
-
-    // Prisma Client is generated into a custom folder; include it (and its engine files)
-    // in the serverless/standalone output so runtime DB calls work on Vercel.
-    outputFileTracingIncludes: {
-      "/*": ["../../packages/db/generated/client/**"],
-    },
+    serverComponentsExternalPackages: ["@prisma/client", "prisma"],
   },
 };
 
