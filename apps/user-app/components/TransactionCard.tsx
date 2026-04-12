@@ -1,5 +1,30 @@
 import { UPArrow, DOWNArrow } from "@repo/ui/icons";
 
+function formatDateUtc(date: Date) {
+  const months = [
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "May",
+    "Jun",
+    "Jul",
+    "Aug",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dec",
+  ];
+
+  const pad2 = (n: number) => String(n).padStart(2, "0");
+  const dd = pad2(date.getUTCDate());
+  const mon = months[date.getUTCMonth()] ?? "";
+  const yyyy = date.getUTCFullYear();
+  const hh = pad2(date.getUTCHours());
+  const mm = pad2(date.getUTCMinutes());
+  return `${dd} ${mon} ${yyyy}, ${hh}:${mm} UTC`;
+}
+
 export const TransactionCard = ({
   status,
   provider,
@@ -32,7 +57,7 @@ export const TransactionCard = ({
             <div>{toFrom}</div>
             <div>{provider}</div>
             <div className="text-slate-600 dark:text-gray-500">
-              {date.toLocaleString()}
+              {formatDateUtc(date)}
             </div>
           </div>
         </div>

@@ -16,6 +16,7 @@ model User {
   name              String
   number            String?             @unique
   password          String?
+  upiPinHash        String?
   avatar            String?
   OnRampTransaction OnRampTransaction[]
   Balance           Balance[]

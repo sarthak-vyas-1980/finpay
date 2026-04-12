@@ -41,12 +41,13 @@ export default function SendCard() {
             </Card>
             {showConfirm && (
                 <ConfirmTransfer to={number} amount={Number(amount)*100}
-                    onConfirm={async()=>{
-                        const res = await p2PTransfer(number, Number(amount)*100)
+                    onCancel={() => setShowConfirm(false)}
+                    onConfirm={async(upiPin)=>{
+                        const res = await p2PTransfer(number, Number(amount)*100, upiPin)
                         if(res?.message !== "Transfer successful"){
-                            alert(res?.message)
-                            return;
+                            return res;
                         }
+                        setShowConfirm(false);
                         router.push("/transactions")
                     }} />
             )}

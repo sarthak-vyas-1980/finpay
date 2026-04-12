@@ -37,6 +37,7 @@ export const GET = async () => {
             email: true,
             number: true,
             password: true,
+            upiPinHash: true,
             avatar: true,
         },
     })
@@ -47,6 +48,7 @@ export const GET = async () => {
         number: user?.number,
         avatar: user?.avatar,
         hasPassword: !!user?.password,
+        hasUpiPin: !!user?.upiPinHash,
     });
 }
 
@@ -113,5 +115,13 @@ export async function POST(req: Request) {
         data: updateData,
     });
 
-    return NextResponse.json(updatedUser);
+    return NextResponse.json({
+        id: updatedUser.id,
+        name: updatedUser.name,
+        email: updatedUser.email,
+        number: updatedUser.number,
+        avatar: updatedUser.avatar,
+        hasPassword: !!updatedUser.password,
+        hasUpiPin: !!updatedUser.upiPinHash,
+    });
 }

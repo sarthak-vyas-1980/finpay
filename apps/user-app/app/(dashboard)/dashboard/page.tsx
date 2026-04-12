@@ -35,6 +35,11 @@ export default async function Dashboard() {
   }
   const userId = Number(session.user.id);
 
+  const user = await prisma.user.findUnique({
+    where: { id: userId },
+    select: { upiPinHash: true },
+  });
+
   const [balance, transactions, monthlySpend, weeklyData, completion] =
     await Promise.all([
       getBalance(userId),
@@ -44,23 +49,62 @@ export default async function Dashboard() {
       getProfileCompletion(userId),
     ]);
 
+  const needsUpiPin = !user?.upiPinHash;
+  const needsProfileCompletion = completion < 100;
+
   return (
     <div className="mt-4 max-w-6xl mx-auto">
-      {completion < 100 && (
-        <div className="bg-yellow-50 dark:bg-yellow-900 border  border-yellow-200 dark:border-yellow-600 p-4 rounded-lg flex justify-between">
-          <div>
-            <p className="font-medium text-yellow-800 dark:text-yellow-200">
-              {" "}
-              Complete your profile{" "}
-            </p>
-            <p className="text-sm"> Your profile is {completion}% complete </p>
-          </div>
-          <Link
-            href="/profile"
-            className="flex items-center bg-yellow-500 text-white px-3 py-0 rounded-lg"
+      {(needsUpiPin || needsProfileCompletion) && (
+        <div className="bg-white dark:bg-slate-800 border dark:border-slate-700 rounded-xl shadow-sm overflow-hidden">
+          <div
+            className={`grid ${
+              needsUpiPin && needsProfileCompletion
+                ? "grid-cols-1 md:grid-cols-2 divide-y md:divide-y-0 md:divide-x divide-gray-200 dark:divide-slate-700"
+                : "grid-cols-1"
+            }`}
           >
-            Complete
-          </Link>
+            {needsUpiPin && (
+              <div className="p-4 bg-blue-50/70 dark:bg-slate-900/40">
+                <div className="flex items-center justify-between gap-4">
+                  <div className="min-w-0">
+                    <p className="text-sm font-semibold text-blue-900 dark:text-gray-100">
+                      Set your UPI PIN
+                    </p>
+                    <p className="mt-0.5 text-xs text-blue-800/80 dark:text-gray-300">
+                      Required to securely send money via P2P.
+                    </p>
+                  </div>
+                  <Link
+                    href="/profile"
+                    className="shrink-0 flex items-center bg-blue-600 hover:bg-blue-700 text-white px-3 py-2 rounded-lg text-sm"
+                  >
+                    Set Now
+                  </Link>
+                </div>
+              </div>
+            )}
+
+            {needsProfileCompletion && (
+              <div className="p-4 bg-yellow-50/70 dark:bg-slate-900/40">
+                <div className="flex items-center justify-between gap-4">
+                  <div className="min-w-0">
+                    <p className="text-sm font-semibold text-yellow-900 dark:text-gray-100">
+                      Complete your profile
+                    </p>
+                    <p className="mt-0.5 text-xs text-yellow-800/80 dark:text-gray-300">
+                      Your profile is {completion}% complete
+                    </p>
+                  </div>
+                  <Link
+                    href="/profile"
+                    className="shrink-0 flex items-center bg-yellow-500 hover:bg-yellow-600 text-white px-3 py-2 rounded-lg text-sm"
+                  >
+                    Complete
+                  </Link>
+                </div>
+              </div>
+            )}
+          </div>
         </div>
       )}
 
